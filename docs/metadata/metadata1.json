@@ -1,5 +1,5 @@
 {
     "filepath" :"/docs/code/nne1.java",
     "answer":false,
-    "rules":"1. something\n2. some other thing"
+    "rules":"`String args[]` is c-type declaration. Java type should be `String[] args`."
 }

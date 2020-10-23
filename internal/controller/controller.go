@@ -50,10 +50,8 @@ func StartGame() error {
 		} else {
 			break
 		}
-		// add option to play again by entering an input
 		// add more code and metadata
 		// add command to see nne rules
-		// add categorise questions
 	}
 	return nil
 }
@@ -92,7 +90,9 @@ func checkAnswer(answer string, metadata *model.Metadata) {
 		}
 		fmt.Println(renderStr)
 	}
-	fmt.Println(metadata.Rules)
+	printer.Println("Things to take care:",color.Underline,color.FgHiWhite)
+	clearSpace()
+	printer.Println(metadata.Rules, color.FgHiYellow)
 }
 
 func loadFromFile(filepath string) (*model.Metadata, error) {
