@@ -45,6 +45,7 @@ func StartGame() error {
 		printer.Println("Enter Y to try again? Anything else to live for another day", color.FgMagenta)
 		fmt.Scanln(&answer)
 		if strings.EqualFold(answer, "Y") {
+			fmt.Print(constants.ClearScreen)
 			continue
 		} else {
 			break
@@ -52,7 +53,9 @@ func StartGame() error {
 		// add option to play again by entering an input
 		// add more code and metadata
 		// add command to see nne rules
+		// add categorise questions
 	}
+	return nil
 }
 
 func clearSpace() {
