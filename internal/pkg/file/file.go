@@ -17,6 +17,7 @@ type File interface {
 	CreateFile(string) error
 	WriteFile(string, string) error
 	GetUserInput() (string, error)
+	DeleteFile(filePath string) error
 }
 
 type fileUtil struct{}
@@ -116,8 +117,26 @@ func (f *fileUtil) CreateFile(filePath string) error {
 }
 
 func (f *fileUtil) WriteFile(filePath string, content string) error {
+	dirPath, err := os.Getwd()
+	if err != nil {
+		return err
+	}
+	filePath = dirPath + "/" + filePath
 	contentInByte := []byte(content)
-	err := ioutil.WriteFile(filePath, contentInByte, 0777)
+	err = ioutil.WriteFile(filePath, contentInByte, 0777)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (f *fileUtil) DeleteFile(filePath string) error {
+	dirPath, err := os.Getwd()
+	if err != nil {
+		return err
+	}
+	filePath = dirPath + "/" + filePath
+	err = os.Remove(filePath)
 	if err != nil {
 		return err
 	}

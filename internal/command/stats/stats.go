@@ -1,11 +1,15 @@
 package stats
 
 import (
+	"clinne/internal/constants"
 	"clinne/internal/pkg/file"
 	"clinne/internal/pkg/printer"
 	"fmt"
 	"github.com/fatih/color"
+	"github.com/guptarohit/asciigraph"
 	"github.com/spf13/cobra"
+	"strconv"
+	"strings"
 )
 
 func NewCmd() *cobra.Command {
@@ -25,6 +29,29 @@ func NewCmd() *cobra.Command {
 			if !isExist {
 				printer.Println("Seems like you have not played any game yet. Play one to generate stats!")
 			}
+			fileContent, err := fileUtil.ReadFile(constants.ResultFilePath)
+			if err != nil {
+				printer.Println(fmt.Sprintf("error in reading file %s", err.Error()), color.FgRed)
+			}
+			series := strings.Split(fileContent, " ")
+			var floatSeries []float64
+			for _, val := range series {
+				if val == "" {
+					continue
+				}
+				floatVal, err := strconv.ParseFloat(val, 64)
+				if err != nil {
+					printer.Println(fmt.Sprintf("error in parsing to float", err.Error()), color.FgRed)
+					break
+				}
+				floatSeries = append(floatSeries, floatVal)
+			}
+			printer.Println("Following is a graph that depicts your NNE performance!!", color.Underline, color.FgHiMagenta)
+			fmt.Println()
+			fmt.Println()
+			data := floatSeries
+			graph := asciigraph.Plot(data, asciigraph.Caption("Game Stats"), asciigraph.Width(50))
+			fmt.Println(graph)
 		},
 	}
 }

@@ -1,6 +1,7 @@
 package command
 
 import (
+	"clinne/internal/command/reset"
 	"clinne/internal/command/rules"
 	"clinne/internal/command/start"
 	"clinne/internal/command/stats"
@@ -28,6 +29,11 @@ func Execute() error {
 	statsCmd := stats.NewCmd()
 	if statsCmd != nil {
 		rootCmd.AddCommand(statsCmd)
+	}
+
+	resetCmd := reset.NewCmd()
+	if resetCmd != nil {
+		rootCmd.AddCommand(resetCmd)
 	}
 
 	if err := rootCmd.Execute(); err != nil {

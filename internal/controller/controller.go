@@ -85,8 +85,8 @@ func setUpFile(fileUtil file.File) error {
 }
 
 func getLatestValueFromFile(fileContent string) (int64, error) {
-	if fileContent == ""{
-		return 0,nil
+	if fileContent == "" {
+		return 0, nil
 	}
 	resultArr := strings.Split(fileContent, " ")
 	latestString := resultArr[len(resultArr)-1]
@@ -97,9 +97,9 @@ func getLatestValueFromFile(fileContent string) (int64, error) {
 	return latestValue, nil
 }
 
-func updateFile(value int64, fileContent string,fileUtil file.File) error {
-	fileContent = fileContent + " " + strconv.FormatInt(value,10)
-	err := fileUtil.WriteFile(constants.ResultFilePath,fileContent)
+func updateFile(value int64, fileContent string, fileUtil file.File) error {
+	fileContent = fileContent + " " + strconv.FormatInt(value, 10)
+	err := fileUtil.WriteFile(constants.ResultFilePath, fileContent)
 	return err
 }
 
@@ -132,7 +132,7 @@ func checkAnswer(answer string, metadata *model.Metadata, fileUtil file.File) er
 			return err
 		}
 		latestValue = latestValue + 1
-		err = updateFile(latestValue,fileContent, fileUtil)
+		err = updateFile(latestValue, fileContent, fileUtil)
 		if err != nil {
 			return err
 		}
@@ -149,7 +149,7 @@ func checkAnswer(answer string, metadata *model.Metadata, fileUtil file.File) er
 			return err
 		}
 		latestValue = latestValue - 1
-		err = updateFile(latestValue,fileContent, fileUtil)
+		err = updateFile(latestValue, fileContent, fileUtil)
 		if err != nil {
 			return err
 		}

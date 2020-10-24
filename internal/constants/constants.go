@@ -9,6 +9,6 @@ const (
 	NneNinja         = "The NNE Ninja!!"
 	FailureMessage   = "Well, That was incorrect. Seems like someone got to..."
 	DoTheHonours     = "Do The Honours!"
-	ResultDirectory = "/results"
-	ResultFilePath = "/results/result.txt"
+	ResultDirectory  = "/results"
+	ResultFilePath   = "/results/result.txt"
 )
