@@ -24,7 +24,7 @@ func NewCmd() *cobra.Command {
 				printer.Println(fmt.Sprintf("error in reading file %s", err.Error()), color.FgRed)
 			}
 			if !isExist {
-				printer.Println("Seems like you have not played any game yet. Play one to generate stats!")
+				printer.Println("Seems like you have not played any game yet. Play one to generate stats!", color.FgHiGreen)
 			} else {
 				fileUtil.DeleteFile(constants.ResultFilePath)
 				printer.Println("Your game has been refreshed!!", color.FgMagenta)

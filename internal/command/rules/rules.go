@@ -17,7 +17,7 @@ func NewCmd() *cobra.Command {
 		Example: "clinne rules",
 		Args:    cobra.MaximumNArgs(0),
 		Run: func(cmd *cobra.Command, args []string) {
-			printer.Println("The NNE you need to take care are:-", color.Underline, color.FgHiGreen)
+			printer.Println("The NNEs you need to take care are:-", color.Underline, color.FgHiGreen)
 			fmt.Println()
 			printer.Println("1. Indentation and spacing between code constructs (classes/methods/specs) must be consistent")
 			fmt.Println()

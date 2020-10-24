@@ -22,16 +22,15 @@ func NewCmd() *cobra.Command {
 		Args:    cobra.MaximumNArgs(0),
 		Run: func(cmd *cobra.Command, args []string) {
 			fileUtil := file.New()
-			isExist, err := fileUtil.IsFileExist("/results/result.txt")
-			if err != nil {
-				printer.Println(fmt.Sprintf("error in reading file %s", err.Error()), color.FgRed)
-			}
+			isExist, _ := fileUtil.IsFileExist("/results/result.txt")
 			if !isExist {
-				printer.Println("Seems like you have not played any game yet. Play one to generate stats!")
+				printer.Println("Seems like you have not played any game yet. Play one to generate stats!", color.FgHiGreen)
+				return
 			}
 			fileContent, err := fileUtil.ReadFile(constants.ResultFilePath)
 			if err != nil {
 				printer.Println(fmt.Sprintf("error in reading file %s", err.Error()), color.FgRed)
+				return
 			}
 			series := strings.Split(fileContent, " ")
 			var floatSeries []float64
