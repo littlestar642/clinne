@@ -42,7 +42,7 @@ func StartGame() error {
 		clearSpace()
 		checkAnswer(answer, metadata)
 		clearSpace()
-		printer.Println("Enter Y to try again? Anything else to live for another day", color.FgMagenta)
+		printer.Println("Enter Y to try again! Anything other key to exit", color.FgMagenta)
 		fmt.Scanln(&answer)
 		if strings.EqualFold(answer, "Y") {
 			fmt.Print(constants.ClearScreen)
@@ -50,8 +50,6 @@ func StartGame() error {
 		} else {
 			break
 		}
-		// add more code and metadata
-		// add command to see nne rules
 	}
 	return nil
 }
@@ -90,7 +88,7 @@ func checkAnswer(answer string, metadata *model.Metadata) {
 		}
 		fmt.Println(renderStr)
 	}
-	printer.Println("Things to take care:",color.Underline,color.FgHiWhite)
+	printer.Println("Things to take care:", color.Underline, color.FgHiWhite)
 	clearSpace()
 	printer.Println(metadata.Rules, color.FgHiYellow)
 }
