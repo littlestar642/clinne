@@ -7,13 +7,15 @@ import (
 	"clinne/internal/pkg/printer"
 	"encoding/json"
 	"fmt"
-	"github.com/fatih/color"
-	"github.com/mbndr/figlet4go"
 	"io/ioutil"
 	"math/rand"
 	"os"
+	"strconv"
 	"strings"
 	"time"
+
+	"github.com/fatih/color"
+	"github.com/mbndr/figlet4go"
 )
 
 func StartGame() error {
@@ -44,7 +46,10 @@ func StartGame() error {
 		printer.Println("AGREE[Y] OR DISAGREE[N]", color.FgMagenta)
 		fmt.Scanln(&answer)
 		clearSpace()
-		checkAnswer(answer, metadata)
+		err = checkAnswer(answer, metadata, fileUtil)
+		if err != nil {
+			return err
+		}
 		clearSpace()
 		printer.Println("Enter Y to try again! Anything other key to exit", color.FgMagenta)
 		fmt.Scanln(&answer)
@@ -59,33 +64,61 @@ func StartGame() error {
 }
 
 func setUpFile(fileUtil file.File) error {
-	_, err := fileUtil.ReadDirectory("/results")
+	_, err := fileUtil.ReadDirectory(constants.ResultDirectory)
 	if err != nil {
-		err = fileUtil.CreateDirIfNotExist("/results")
+		err = fileUtil.CreateDirIfNotExist(constants.ResultDirectory)
 		if err != nil {
 			return err
 		}
 	}
-	exists, err := fileUtil.IsFileExist("/results/result.txt")
+	exists, err := fileUtil.IsFileExist(constants.ResultFilePath)
 	if err != nil {
 		return err
 	}
 	if !exists {
-		err = fileUtil.CreateFile("/results/result.txt")
+		err = fileUtil.CreateFile(constants.ResultFilePath)
 		if err != nil {
 			return err
 		}
 	}
 	return nil
 }
+
+func getLatestValueFromFile(fileContent string) (int64, error) {
+	if fileContent == ""{
+		return 0,nil
+	}
+	resultArr := strings.Split(fileContent, " ")
+	latestString := resultArr[len(resultArr)-1]
+	latestValue, err := strconv.ParseInt(latestString, 10, 32)
+	if err != nil {
+		return -1, err
+	}
+	return latestValue, nil
+}
+
+func updateFile(value int64, fileContent string,fileUtil file.File) error {
+	fileContent = fileContent + " " + strconv.FormatInt(value,10)
+	err := fileUtil.WriteFile(constants.ResultFilePath,fileContent)
+	return err
+}
+
 func clearSpace() {
 	fmt.Println()
 	fmt.Println()
 }
 
-func checkAnswer(answer string, metadata *model.Metadata) {
+func checkAnswer(answer string, metadata *model.Metadata, fileUtil file.File) error {
 	ascii := figlet4go.NewAsciiRender()
 	options := figlet4go.NewRenderOptions()
+	fileContent, err := fileUtil.ReadFile(constants.ResultFilePath)
+	if err != nil {
+		return err
+	}
+	latestValue, err := getLatestValueFromFile(fileContent)
+	if err != nil {
+		return err
+	}
 
 	if (strings.EqualFold(answer, "Y") && metadata.Answer) || (strings.EqualFold(answer, "N") && !metadata.Answer) {
 		options.FontColor = []figlet4go.Color{
@@ -96,7 +129,12 @@ func checkAnswer(answer string, metadata *model.Metadata) {
 		printer.Println(constants.SuccessMessage, color.FgGreen)
 		renderStr, err := ascii.RenderOpts(constants.NneNinja, options)
 		if err != nil {
-			fmt.Println(err.Error())
+			return err
+		}
+		latestValue = latestValue + 1
+		err = updateFile(latestValue,fileContent, fileUtil)
+		if err != nil {
+			return err
 		}
 		fmt.Println(renderStr)
 	} else {
@@ -108,13 +146,19 @@ func checkAnswer(answer string, metadata *model.Metadata) {
 		printer.Println(constants.FailureMessage, color.FgRed)
 		renderStr, err := ascii.RenderOpts(constants.DoTheHonours, options)
 		if err != nil {
-			fmt.Println(err.Error())
+			return err
+		}
+		latestValue = latestValue - 1
+		err = updateFile(latestValue,fileContent, fileUtil)
+		if err != nil {
+			return err
 		}
 		fmt.Println(renderStr)
 	}
 	printer.Println("Things to take care:", color.Underline, color.FgHiWhite)
 	clearSpace()
 	printer.Println(metadata.Rules, color.FgHiYellow)
+	return nil
 }
 
 func loadFromFile(filepath string) (*model.Metadata, error) {
