@@ -22,6 +22,10 @@ func StartGame() error {
 	if err != nil {
 		return err
 	}
+	err = setUpFile(fileUtil)
+	if err != nil {
+		return err
+	}
 	rand.Seed(time.Now().UnixNano())
 	for {
 		chosenVal := rand.Intn(len(files))
@@ -54,6 +58,26 @@ func StartGame() error {
 	return nil
 }
 
+func setUpFile(fileUtil file.File) error {
+	_, err := fileUtil.ReadDirectory("/results")
+	if err != nil {
+		err = fileUtil.CreateDirIfNotExist("/results")
+		if err != nil {
+			return err
+		}
+	}
+	exists, err := fileUtil.IsFileExist("/results/result.txt")
+	if err != nil {
+		return err
+	}
+	if !exists {
+		err = fileUtil.CreateFile("/results/result.txt")
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
 func clearSpace() {
 	fmt.Println()
 	fmt.Println()

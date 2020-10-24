@@ -3,6 +3,7 @@ package command
 import (
 	"clinne/internal/command/rules"
 	"clinne/internal/command/start"
+	"clinne/internal/command/stats"
 	"github.com/spf13/cobra"
 )
 
@@ -22,6 +23,11 @@ func Execute() error {
 	rulesCmd := rules.NewCmd()
 	if rulesCmd != nil {
 		rootCmd.AddCommand(rulesCmd)
+	}
+
+	statsCmd := stats.NewCmd()
+	if statsCmd != nil {
+		rootCmd.AddCommand(statsCmd)
 	}
 
 	if err := rootCmd.Execute(); err != nil {

@@ -10,7 +10,7 @@ import (
 // File interface define contract for file io
 type File interface {
 	GetIoReader(string) (io.Reader, error)
-	IsFileExist(string) bool
+	IsFileExist(string) (bool, error)
 	ReadFile(string) (string, error)
 	ReadDirectory(string) ([]string, error)
 	CreateDirIfNotExist(string) error
@@ -44,11 +44,16 @@ func (f *fileUtil) GetIoReader(filePath string) (io.Reader, error) {
 	return ioReader, nil
 }
 
-func (f *fileUtil) IsFileExist(filePath string) bool {
-	if _, err := os.Stat(filePath); os.IsNotExist(err) {
-		return false
+func (f *fileUtil) IsFileExist(filePath string) (bool, error) {
+	dirPath, err := os.Getwd()
+	if err != nil {
+		return false, err
 	}
-	return true
+	filePath = dirPath + filePath
+	if _, err := os.Stat(filePath); os.IsNotExist(err) {
+		return false, nil
+	}
+	return true, nil
 }
 
 func (f *fileUtil) ReadFile(filePath string) (string, error) {
@@ -56,7 +61,7 @@ func (f *fileUtil) ReadFile(filePath string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	filePath = dirAbsPath + filePath
+	filePath = dirAbsPath + "/" + filePath
 	content, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		return "", err
@@ -83,6 +88,11 @@ func (f *fileUtil) ReadDirectory(dirPath string) ([]string, error) {
 }
 
 func (f *fileUtil) CreateDirIfNotExist(dir string) error {
+	dirPath, err := os.Getwd()
+	if err != nil {
+		return err
+	}
+	dir = dirPath + "/" + dir
 	if _, err := os.Stat(dir); os.IsNotExist(err) {
 		err = os.MkdirAll(dir, 0755)
 		if err != nil {
@@ -93,7 +103,12 @@ func (f *fileUtil) CreateDirIfNotExist(dir string) error {
 }
 
 func (f *fileUtil) CreateFile(filePath string) error {
-	_, err := os.Create(filePath)
+	dirPath, err := os.Getwd()
+	if err != nil {
+		return err
+	}
+	filePath = dirPath + "/" + filePath
+	_, err = os.Create(filePath)
 	if err != nil {
 		return err
 	}
