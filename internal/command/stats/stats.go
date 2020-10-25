@@ -40,12 +40,12 @@ func NewCmd() *cobra.Command {
 				}
 				floatVal, err := strconv.ParseFloat(val, 64)
 				if err != nil {
-					printer.Println(fmt.Sprintf("error in parsing to float", err.Error()), color.FgRed)
+					printer.Println(fmt.Sprintf("error in parsing to float %s", err.Error()), color.FgRed)
 					break
 				}
 				floatSeries = append(floatSeries, floatVal)
 			}
-			printer.Println("Following is a graph that depicts your NNE performance!!", color.Underline, color.FgHiMagenta)
+			printer.Println("Following is a graph that depicts your NNE performance!!", color.Underline, color.FgHiGreen)
 			fmt.Println()
 			fmt.Println()
 			data := floatSeries

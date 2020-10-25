@@ -39,7 +39,7 @@ func StartGame() error {
 		if err != nil {
 			return err
 		}
-		printer.Println(constants.CodeBlock, color.Underline, color.FgCyan)
+		printer.Println(metadata.Description+". "+constants.CodeBlock, color.Underline, color.FgCyan)
 		clearSpace()
 		printer.Println(codestring, color.FgHiWhite)
 		var answer string

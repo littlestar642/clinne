@@ -1,5 +1,6 @@
 {
     "filepath" :"/docs/code/nne1.java",
+    "description":"Examine the codeblock for errors",
     "answer":false,
     "rules":"`String args[]` is c-type declaration. Java type should be `String[] args`."
 }

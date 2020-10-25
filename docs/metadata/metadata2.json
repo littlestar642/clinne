@@ -1,5 +1,6 @@
 {
     "filepath" :"/docs/code/nne2.java",
+    "description":"Examine the codeblock for errors",
     "answer":false,
     "rules":"Indentation and spacing between code constructs should be consistent."
 }
