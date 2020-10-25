@@ -44,6 +44,7 @@ func StartGame() error {
 		printer.Println(codestring, color.FgHiWhite)
 		var answer string
 		printer.Println("AGREE[Y] OR DISAGREE[N]", color.FgMagenta)
+		printer.Println("Enter your response:", color.FgCyan)
 		fmt.Scanln(&answer)
 		clearSpace()
 		err = checkAnswer(answer, metadata, fileUtil)

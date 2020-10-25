@@ -9,6 +9,7 @@ import (
 
 func main() {
 	fmt.Print(constants.ClearScreen)
+	fmt.Print(constants.HomePosition)
 	ascii := figlet4go.NewAsciiRender()
 	options := figlet4go.NewRenderOptions()
 	options.FontColor = []figlet4go.Color{
