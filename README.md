@@ -2,6 +2,8 @@
 
 Clinne is an open-source cli application that helps one learn clean code and play all the while doing so. One can install it on their operating systems and then play the game using the terminal. Clinne got its name from the abbreviations CLI and NNE. CLI stands for Command Line Interface and NNE for Non-Negotiable Etiquettes.
 
+![clinne banner](./docs/imgs/logo1.png)
+
 The NNEs we are expected to follow while writing Clean Code can be summarized in eleven points. These are:-
 
 1. Indentation and spacing between code constructs (classes/methods/specs) must be consistent
